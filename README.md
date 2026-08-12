@@ -1,62 +1,36 @@
-# Corda Remit
+# Corridor Selection
 
-A financial modelling case study: could a digital cross-border payment provider improve UK→India and UK→Nigeria remittances through local settlement, and where does that opportunity actually differ by corridor?
+## Weighted comparison
 
-## What Corda Remit does
+| Dimension | Weight | India | Nigeria | Source |
+|---|---|---|---|---|
+| UK corridor size | 20% | £4.17B | £3.90B | ONS-based estimate, via InternationalMoneyTransfer.com Money Transfer Statistics 2025 |
+| Fee compression headroom | 25% | Low: already ~1.7-1.8% conversion fee + GST | High: historically 8-10%, compressed to 3-5% by fintech entrants, still moving | Wise India fee breakdown (InfinityApp review); Remitbee 2025 Top Remittance Corridors report |
+| Competitive intensity | 20% | High: Wise, Remitly, InstaReM, Xoom, Western Union entrenched | High but fragmented (Sendwave, TransferGo, Africhange, Roze Remit), no dominant leader | Market scan, Phase 0 |
+| Structural friction (evidenced) | 25% | High: RBI purpose-code mismatches, FIRA documentation requirements cause delays independent of settlement speed | Moderate: verification delays/limits, largely provider-wide rather than corridor-specific | Wise India user review; provider Trustpilot patterns |
+| Data availability | 10% | Good | Good | n/a |
 
-Corda Remit is a modelled (not real) digital remittance provider using the local-to-local settlement model — holding currency pools in each destination country and netting transfers against them, rather than routing payments through correspondent banking chains. This project builds the unit economics, financial model, and infrastructure cost layer for two UK outbound corridors, to test whether — and how — the opportunity differs between them.
+**Weighted score: India 3.65 / Nigeria 4.10** (1-5 scale per dimension)
 
-## Corridors
+Note: weights reflect this project's judgement, not an objective standard. Story sharpness (structural friction) was weighted equally with fee headroom. A different weighting could reasonably favour India. This is decided and stated explicitly rather than left implicit.
 
-- **UK → India**
-- **UK → Nigeria**
+## Decision
 
-Chosen via a weighted comparison across corridor size, fee-compression headroom, competitive intensity, and structural friction — see `docs/corridor-selection.md` for the full scoring and sources.
+Both corridors carried forward as parallel comparisons, run through the same modelling pipeline (SQL, Excel, Python) rather than built as two separate projects. Corridor is treated as a dimension/field throughout, not a fork.
 
-## Who the customer is
+## Gap statements
 
-UK-based senders — primarily diaspora communities supporting family, education, or investment needs in India and Nigeria — using a mobile-first digital transfer service in place of banks or cash-based agents.
+**India:** UK→India remittances already operate on thin fee margins (~1.7-1.8% conversion fee plus GST), so incumbents compete on price alone with little room left to disrupt. The evidenced gap is procedural, not economic: RBI purpose-code mismatches and FIRA documentation requirements cause delays independent of settlement speed, and user reviews of established providers cite this friction specifically as the pain point. A purpose-code-aware onboarding flow that pre-validates documentation before the transfer is initiated could reduce delivery failures without competing on an already-compressed margin.
 
-## The gap it fixes
+**Nigeria:** The UK→Nigeria corridor has historically carried high fees (8-10%), and while fintech entrants like Wise and WorldRemit have compressed this to 3-5%, the corridor remains fragmented, and no single digital provider holds a dominant position. This leaves real fee-compression headroom on the table, and the competitive gap is structural: a fragmented market with an undifferentiated set of mid-sized players is more winnable than one with an established leader. Corda Remit's opportunity here is pricing-led rather than process-led.
 
-**India:** UK→India remittances already operate on thin fee margins, so incumbents compete on price with little room left. The evidenced gap is procedural: RBI purpose-code mismatches and FIRA documentation requirements cause delivery delays independent of settlement speed.
+## Caveat
 
-**Nigeria:** The UK→Nigeria corridor has historically carried high fees (8-10%), only partially compressed by fintech entrants (down to 3-5%), in a market that remains fragmented with no dominant digital provider. Real fee-compression headroom remains.
+Corridor size figures (£4.17B / £3.90B) come from a secondary aggregator citing ONS balance-of-payments data, not the ONS release directly. Reliable enough for this project's purposes, but not independently verified against the primary source.
 
-Full sourced statements in `docs/corridor-selection.md`.
+## Sources
 
-## How it makes money
-
-- Transaction fees on transfers
-- FX spread on conversion
-- Float income — interest earned on pooled customer funds held briefly before settlement
-
-## KPIs we track
-
-- **Transfer volume** — the core driver of fee and FX revenue
-- **Take rate** — revenue as a % of volume, the key profitability lever per corridor
-- **CAC payback period** — how many months until a customer's cumulative revenue covers their acquisition cost
-- **Active customers / churn** — retention drives lifetime value, which determines whether acquisition spend is justified
-- **Delivery speed vs. competitors** — the operational metric tied directly to the evidenced gap in each corridor
-
-## Project structure
-
-```
-corda-remit/
-├── README.md
-├── docs/
-│   └── corridor-selection.md      # Phase 0 scoring table + sources
-├── data/                          # synthetic transaction data (Phase 2)
-├── sql/                           # cohort, CAC, LTV, payback queries (Phase 2)
-└── python/                        # infra cost model (Phase 4)
-```
-
-## Progress
-
-- [x] Phase 0 — Research & corridor selection
-- [x] Phase 1 — Company narrative
-- [ ] Phase 2 — Unit economics in SQL
-- [ ] Phase 3 — Three-statement model
-- [ ] Phase 4 — Infra cost layer in Python
-- [ ] Phase 5 — FX hedging layer
-- [ ] Phase 6 — Streamlit dashboard + investment memo
+- [Money Transfer Statistics 2025, InternationalMoneyTransfer.com](https://www.internationalmoneytransfer.com/guides/statistics)
+- [Top Remittance Corridors 2025, Remitbee](https://www.remitbee.com/blog/money-transfer/remittance/top-remittance-corridors-2025-fees-market-share)
+- [Wise Review: 12 Months of International Payments in India, InfinityApp](https://www.infinityapp.in/blog/wise-review-india)
+- [Migrant Remittances to and from the UK, Migration Observatory, Oxford](https://migrationobservatory.ox.ac.uk/resources/briefings/migrant-remittances-to-and-from-the-uk/)
