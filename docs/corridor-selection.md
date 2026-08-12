@@ -24,7 +24,7 @@ Both corridors carried forward as parallel comparisons, run through the same mod
 
 **Nigeria:** The UK→Nigeria corridor has historically carried high fees (8-10%), and while fintech entrants like Wise and WorldRemit have compressed this to 3-5%, the corridor remains fragmented, and no single digital provider holds a dominant position. This leaves real fee-compression headroom on the table, and the competitive gap is structural: a fragmented market with an undifferentiated set of mid-sized players is more winnable than one with an established leader. Corda Remit's opportunity here is pricing-led rather than process-led.
 
-## Caveat
+## Data Limitations
 
 Corridor size figures (£4.17B / £3.90B) come from a secondary aggregator citing ONS balance-of-payments data, not the ONS release directly. Reliable enough for this project's purposes, but not independently verified against the primary source.
 
